@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" fx:id="AddConections" prefHeight="288.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ispyj.controller.conections.AddConectionsController">
+   <children>
+      <Label layoutX="36.0" layoutY="18.0" text="Siglas del Censo:" />
+      <Label layoutX="28.0" layoutY="55.0" text="Nombre de Censo:" />
+      <Label layoutX="295.0" layoutY="18.0" text="Año:" />
+      <Label layoutX="77.0" layoutY="94.0" text="Usuario:" />
+      <Label layoutX="60.0" layoutY="134.0" text="Contraseña:" />
+      <Label layoutX="91.0" layoutY="207.0" text="Host:" />
+      <Label layoutX="80.0" layoutY="172.0" text="Puerto:" />
+      <Label layoutX="77.0" layoutY="243.0" text="Servicio:" />
+      <Button fx:id="buttonProbar" layoutX="536.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleButtonActionProbar" prefHeight="25.0" prefWidth="176.0" text="Probar Conexion" />
+      <Button fx:id="buttonAgregar" layoutX="536.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleButtonActionAgregar" prefHeight="25.0" prefWidth="176.0" text="Agregar" />
+      <Button fx:id="buttonCancelar" layoutX="536.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleButtonActionCancelar" prefHeight="25.0" prefWidth="176.0" text="Cancelar" />
+      <TextField fx:id="siglas" layoutX="140.0" layoutY="14.0" prefHeight="25.0" prefWidth="111.0" />
+      <TextField fx:id="anio" layoutX="341.0" layoutY="14.0" prefHeight="25.0" prefWidth="135.0" />
+      <TextField fx:id="nombreCenso" layoutX="140.0" layoutY="51.0" prefHeight="25.0" prefWidth="334.0" />
+      <TextField fx:id="usuario" layoutX="140.0" layoutY="90.0" prefHeight="25.0" prefWidth="334.0" />
+      <TextField fx:id="passShow" layoutX="140.0" layoutY="132.0" prefHeight="25.0" prefWidth="297.0" />
+      <PasswordField fx:id="pass" layoutX="140.0" layoutY="132.0" prefHeight="25.0" prefWidth="297.0" />
+      <TextField fx:id="puerto" layoutX="140.0" layoutY="168.0" prefHeight="25.0" prefWidth="129.0" />
+      <TextField fx:id="host" layoutX="140.0" layoutY="203.0" prefHeight="25.0" prefWidth="334.0" />
+      <TextField fx:id="servicio" layoutX="140.0" layoutY="239.0" prefHeight="25.0" prefWidth="334.0" />
+      <CheckBox fx:id="show" layoutX="447.0" layoutY="134.0" mnemonicParsing="false" onAction="#handleShowPass" text="Mostrar" />
+   </children>
+</AnchorPane>

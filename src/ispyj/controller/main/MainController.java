@@ -16,19 +16,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ispyj.bd.local.SQLiteConnector;
 import ispyj.controller.conections.NewConectionController;
+import ispyj.interfaces.ConectionChangeListenerMain;
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
  *
  * @author ERNESTO.NAVARRO
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable, ConectionChangeListenerMain {
 
     @FXML
     private Button buttonConnection;
@@ -51,6 +53,11 @@ public class MainController implements Initializable {
         refreshCombo(true);
     }
 
+    @Override
+    public void onConectionChange() {
+        refreshCombo(false);
+    }
+
     @FXML
     private void handleButtonActionConnection(ActionEvent event) {
     }
@@ -62,11 +69,14 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ispyj/views/conections/NewConection.fxml"));
             Parent root = loader.load();
             NewConectionController newConectionController = loader.getController();
-            newConectionController.setParentController(this);
+            newConectionController.setConectionChangeListener(this);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("Conexiones");
+            stage.setOnCloseRequest((WindowEvent evento) -> {
+                refreshCombo(false);
+            });
 //            stage.initStyle(StageStyle.TRANSPARENT);
             stage.show();
         } catch (IOException e) {
@@ -74,9 +84,9 @@ public class MainController implements Initializable {
         }
 
     }
-    
+
     @FXML
-    private void handleRefreshButton(ActionEvent event){
+    private void handleRefreshButton(ActionEvent event) {
         refreshCombo(false);
     }
 

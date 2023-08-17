@@ -1,11 +1,14 @@
 package ispyj.controller.conections;
 
+import ispyj.bd.cloud.OracleConnector;
 import ispyj.bd.local.SQLiteConnector;
 import ispyj.controller.main.MainController;
 import ispyj.dto.sqlite.ConexionesDto;
+import ispyj.interfaces.ConectionChangeListenerMain;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -51,7 +54,7 @@ public class NewConectionController implements Initializable {
     private Button buttonRefresh;
 
     public ConexionesDto datosConexion;
-    private MainController parentController;
+    private ConectionChangeListenerMain conectionChangeListener;
 
     /**
      * Initializes the controller class.
@@ -172,14 +175,43 @@ public class NewConectionController implements Initializable {
         }
 
     }
-    
-    private void deleteConexion(ConexionesDto conexion) {
-    // Aquí debes escribir el código para eliminar el registro de la base de datos SQLite.
-    // Usando la conexión y el objeto ConexionesDto, ejecuta la consulta DELETE adecuada.
 
-    // Luego, después de eliminar el registro, puedes llamar a refreshTable para actualizar el TableView:
-     refreshTable(true);
-}
+    private void deleteConexion(ConexionesDto conexion) {
+        PreparedStatement pstmt = null;
+        Connection connection = SQLiteConnector.getConnection();
+        String delete = "DELETE FROM CONECTION WHERE ID_CONECTION = ?";
+        try {
+            if (connection != null) {
+                pstmt = connection.prepareStatement(delete);
+                pstmt.setInt(1, conexion.getId_conection());
+                int renglonesAfectados = pstmt.executeUpdate();
+                if (renglonesAfectados > 0) {
+                    showSuccessDialog("Registro eliminado exitosamente.");
+                    refreshTable(false);
+                } else {
+                    showErrorDialog("Ocurrio un error al momento de eliminar el censo, intente nuevamente o contacte al administrador.");
+                }
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void showSuccessDialog(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Exito");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     @FXML
     private void handleButtonActionRefresh(ActionEvent event) {
@@ -191,6 +223,9 @@ public class NewConectionController implements Initializable {
     private void handleButtonActionClose(ActionEvent event) {
         Stage stage = (Stage) buttonClose.getScene().getWindow();
         stage.close();
+        if (conectionChangeListener != null) {
+            conectionChangeListener.onConectionChange();
+        }
     }
 
     public void refreshTable(boolean isPrimeraVez) {
@@ -244,8 +279,8 @@ public class NewConectionController implements Initializable {
         }
     }
 
-    public void setParentController(MainController controller) {
-        parentController = controller;
+    public void setConectionChangeListener(ConectionChangeListenerMain listener) {
+        this.conectionChangeListener = listener;
     }
 
 }
